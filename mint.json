@@ -42,9 +42,9 @@
     {
       "group": "Getting started",
       "pages": [
-        "intro/introduction",
+        "intro/install",
         "intro/quickstart",
-        "intro/development"
+        "intro/strategies"
       ]
     },
     {
