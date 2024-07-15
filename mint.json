@@ -33,7 +33,7 @@
   ],
   "anchors": [
     {
-      "name": "To application",
+      "name": "To Rho",
       "icon": "arrow-up-right-from-square",
       "url": "https://rho.store"
     }
@@ -42,7 +42,6 @@
     {
       "group": "Getting started",
       "pages": [
-        "intro/install",
         "intro/quickstart",
         "intro/strategies"
       ]
