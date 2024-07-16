@@ -50,6 +50,23 @@ table = rho_client.store_df(
 print(table.client_url)
 ```
 
+The method is also available on the `Table` object:
+```python main.py
+import pandas as pd
+
+# example data
+initial_data = pd.DataFrame({"value": [i for i in range(10, start=1)]})
+
+# create new table
+table = rho_client.store_df(
+    initial_data,
+    name="append_demo"
+)
+# append more data
+table.append(more_data)
+print(table.client_url)
+```
+
 ### 3. Replace
 The replace strategy will replace the data in the existing table. To replace, you need to specify the `table_id` of the table you want to replace.
 
@@ -74,6 +91,25 @@ table = rho_client.store_df(
 print(table.client_url)
 ```
 
+There is a shorthand for the method available on the `Table`-object:
+```python main.py
+import pandas as pd
+
+# example data
+initial_data = pd.DataFrame({"value": [i for i in range(10, start=1)]})
+
+# create new table
+table = rho_client.store_df(
+    initial_data,
+    name="replace_demo"
+)
+# replace the data
+new_data = pd.DataFrame({"value": [i for i in range(10, start=11)]})
+table.replace(new_data)
+print(table.client_url)
+```
+
+
 ### 4. Merge
 The merge strategy will merge the data in the existing table. To merge, you need to specify the `table_id` of the table you want to merge.
 You also need to specify the column to merge on. The merge strategy will merge the data on the specified column.
@@ -90,13 +126,35 @@ table = rho_client.store_df(
     initial_data,
     name="replace_demo"
 )
-# replace the data
-new_data = pd.DataFrame({"value": [i for i in range(10, start=11)]})
+# merge on specific column
+new_data = pd.DataFrame({"value": [i for i in range(20, start=1)]})
 table = rho_client.store_df(
     new_data,
     table_id=table.table_id,
     strategy="MERGE",
     merge_options={"column": "value"}
 )
+print(table.client_url)
+```
+
+There is a shorthand for the method available on the `Table`-object:
+
+```python main.py
+import pandas as pd
+from rho_store import RhoClient
+
+rho_client = RhoClient(api_key="$YOUR_API_KEY")
+
+# example data
+initial_data = pd.DataFrame({"value": [i for i in range(10, start=1)]})
+
+# create new table
+table = rho_client.store_df(
+    initial_data,
+    name="replace_demo"
+)
+# merge on specific column
+new_data = pd.DataFrame({"value": [i for i in range(20, start=1)]})
+table.merge(new_data, column="value")
 print(table.client_url)
 ```
