@@ -1,98 +1,101 @@
 ---
 title: 'Upload strategies'
-description: 'Learn how to preview changes locally'
+description: 'Different ways to upload your changes'
 ---
 
-<Info>
-  **Prerequisite** You should have installed Node.js (version 18.10.0 or
-  higher).
-</Info>
+There are four different upload strategies available:
+1. New table
+2. Append
+3. Replace
+4. Merge
 
-Step 1. Install Mintlify on your OS:
+### 1. New table
+New table is the default strategy. It will always create a new table.
 
-<CodeGroup>
+```python main.py
+import pandas as pd
 
-```bash npm
-npm i -g mintlify
+# example data
+emissions_df = pd.read_csv("https://raw.githubusercontent.com/plotly/datasets/master/Emissions%20Data.csv")
+
+table = rho_client.store_df(
+    emissions_df,
+    name="emissions_data",
+    strategy="NEW_TABLE"  # default strategy, can be omitted
+)
+print(table.client_url)
 ```
 
-```bash yarn
-yarn global add mintlify
+### 2. Append
+Append strategy will append the data to the existing table. To append, you need to specify the `table_id` of the table you want to append to.
+
+```python main.py
+import pandas as pd
+
+# example data
+initial_data = pd.DataFrame({"value": [i for i in range(10, start=1)]})
+
+# create new table
+table = rho_client.store_df(
+    initial_data,
+    name="append_demo"
+)
+# append more data
+more_data = pd.DataFrame({"value": [i for i in range(10, start=11)]})
+table = rho_client.store_df(
+    more_data,
+    table_id=table.table_id,
+    strategy="APPEND"
+)
+print(table.client_url)
 ```
 
-</CodeGroup>
+### 3. Replace
+The replace strategy will replace the data in the existing table. To replace, you need to specify the `table_id` of the table you want to replace.
 
-Step 2. Go to the docs are located (where you can find `mint.json`) and run the following command:
+```python main.py
+import pandas as pd
 
-```bash
-mintlify dev
+# example data
+initial_data = pd.DataFrame({"value": [i for i in range(10, start=1)]})
+
+# create new table
+table = rho_client.store_df(
+    initial_data,
+    name="replace_demo"
+)
+# replace the data
+new_data = pd.DataFrame({"value": [i for i in range(10, start=11)]})
+table = rho_client.store_df(
+    new_data,
+    table_id=table.table_id,
+    strategy="REPLACE"
+)
+print(table.client_url)
 ```
 
-The documentation website is now available at `http://localhost:3000`.
+### 4. Merge
+The merge strategy will merge the data in the existing table. To merge, you need to specify the `table_id` of the table you want to merge.
+You also need to specify the column to merge on. The merge strategy will merge the data on the specified column.
+The merge-column must be a unique column in both tables.
 
-### Custom Ports
+```python main.py
+import pandas as pd
 
-Mintlify uses port 3000 by default. You can use the `--port` flag to customize the port Mintlify runs on. For example, use this command to run in port 3333:
+# example data
+initial_data = pd.DataFrame({"value": [i for i in range(10, start=1)]})
 
-```bash
-mintlify dev --port 3333
+# create new table
+table = rho_client.store_df(
+    initial_data,
+    name="replace_demo"
+)
+# replace the data
+new_data = pd.DataFrame({"value": [i for i in range(10, start=11)]})
+table = rho_client.store_df(
+    new_data,
+    table_id=table.table_id,
+    strategy="MERGE"
+)
+print(table.client_url)
 ```
-
-You will see an error like this if you try to run Mintlify in a port that's already taken:
-
-```md
-Error: listen EADDRINUSE: address already in use :::3000
-```
-
-## Mintlify Versions
-
-Each CLI is linked to a specific version of Mintlify. Please update the CLI if your local website looks different than production.
-
-<CodeGroup>
-
-```bash npm
-npm i -g mintlify@latest
-```
-
-```bash yarn
-yarn global upgrade mintlify
-```
-
-</CodeGroup>
-
-## Deployment
-
-<Tip>
-  Unlimited editors available under the [Startup
-  Plan](https://mintlify.com/pricing)
-</Tip>
-
-You should see the following if the deploy successfully went through:
-
-<Frame>
-  <img src="/images/checks-passed.png" style={{ borderRadius: '0.5rem' }} />
-</Frame>
-
-## Troubleshooting
-
-Here's how to solve some common problems when working with the CLI.
-
-<AccordionGroup>
-  <Accordion title="Mintlify is not loading">
-    Update to Node v18. Run `mintlify install` and try again.
-  </Accordion>
-  <Accordion title="No such file or directory on Windows">
-Go to the `C:/Users/Username/.mintlify/` directory and remove the `mint`
-folder. Then Open the Git Bash in this location and run `git clone
-https://github.com/mintlify/mint.git`.
-
-Repeat step 3.
-
-  </Accordion>
-  <Accordion title="Getting an unknown error">
-    Try navigating to the root of your device and delete the ~/.mintlify folder.
-    Then run `mintlify dev` again.
-  </Accordion>
-</AccordionGroup>
-
-Curious about what changed in a CLI version? [Check out the CLI changelog.](/changelog/command-line)
