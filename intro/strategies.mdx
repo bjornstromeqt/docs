@@ -95,7 +95,8 @@ new_data = pd.DataFrame({"value": [i for i in range(10, start=11)]})
 table = rho_client.store_df(
     new_data,
     table_id=table.table_id,
-    strategy="MERGE"
+    strategy="MERGE",
+    merge_options={"column": "value"}
 )
 print(table.client_url)
 ```
