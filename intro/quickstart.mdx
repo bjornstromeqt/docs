@@ -6,19 +6,21 @@ description: 'Get up and running in a few minutes'
 import { APP_ACCOUNT_PAGE } from '/snippets/variables.mdx';
 
 ## Setting up
+
 <Info>
   **Prerequisite** You should have created an account on [Rho web app](https://rho.store).
 </Info>
 
-
 In the web app, go to [account settings](https://rho.store/app/account) to get an API key.
 
 Install the Python SDK:
+
 ```bash
 pip install rho-store --upgrade --no-cache
 ```
 
 Import and initialize the client:
+
 ```python main.py
 from rho_store import RhoClient
 
@@ -26,6 +28,7 @@ rho_client = RhoClient(api_key="$YOUR_API_KEY")
 ```
 
 List available tables:
+
 ```python main.py
 tables = rho_client.list_tables()
 
@@ -34,20 +37,24 @@ for table in tables:
 ```
 
 Fetch data for a table:
+
 ```python main.py
 table = tables[0]
-df = table.data
+df = table.get_df()
 
 print(df.head())
 ```
 
 ### Upload a dataset
+
 Make sure [pandas](https://pandas.pydata.org/) is installed:
+
 ```bash
 pip install pandas
 ```
 
 Upload a dataframe with one line of code:
+
 ```python main.py
 import pandas as pd
 
@@ -59,6 +66,7 @@ print(table.client_url)  # the URL of the table on Rho web app
 ```
 
 ## Summary
+
 That's it! You have uploaded and downloaded data from `rho` using one-liners.
 
 In the next section, we will learn how to use different types of upload and merge strategies.
